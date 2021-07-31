@@ -29,8 +29,8 @@ public final class FeedViewController: UITableViewController, UITableViewDataSou
 		title = viewModel?.title
 		viewModel?.onLoadingStateChange = { [weak self] isLoading in
 			if isLoading {
-				self?.errorView?.hideMessage()
 				self?.refreshControl?.beginRefreshing()
+				self?.errorView?.hideMessage()
 			} else {
 				self?.refreshControl?.endRefreshing()
 			}
