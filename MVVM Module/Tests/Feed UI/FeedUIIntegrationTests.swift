@@ -253,16 +253,17 @@ final class FeedUIIntegrationTests: XCTestCase {
 		XCTAssertNil(view?.renderedImage, "Expected no rendered image when an image load finishes after the view is not visible anymore")
 	}
 
-	func test_loadFeedCompletion_dispatchesFromBackgroundToMainThread() {
+	func test_loadFeedCompletion_renderingErrorMessageUntilTheNextReload() {
 		let (sut, loader) = makeSUT()
-		sut.loadViewIfNeeded()
 
-		let exp = expectation(description: "Wait for background queue")
-		DispatchQueue.global().async {
-			loader.completeFeedLoading(at: 0)
-			exp.fulfill()
-		}
-		wait(for: [exp], timeout: 1.0)
+		sut.loadViewIfNeeded()
+		XCTAssertEqual(sut.errorMessage, nil)
+
+		loader.completeFeedLoadingWithError()
+
+		XCTAssertEqual(sut.errorMessage, localized("FEED_VIEW_CONNECTION_ERROR"))
+		sut.simulateUserInitiatedFeedReload()
+		XCTAssertEqual(sut.errorMessage, nil)
 	}
 
 	func test_loadImageDataCompletion_dispatchesFromBackgroundToMainThread() {
