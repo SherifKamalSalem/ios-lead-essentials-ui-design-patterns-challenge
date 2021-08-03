@@ -11,7 +11,7 @@ extension FeedViewController {
 	}
 
 	func simulateTapOnError() {
-		feedErrorView?.button.simulate(event: .touchUpInside)
+		errorView?.button.simulate(event: .touchUpInside)
 	}
 
 	@discardableResult
@@ -62,11 +62,7 @@ extension FeedViewController {
 		return 0
 	}
 
-	var feedErrorView: ErrorView? {
-		return tableView.tableHeaderView as? ErrorView
-	}
-
 	var errorMessage: String? {
-		return feedErrorView?.message
+		return errorView?.message
 	}
 }

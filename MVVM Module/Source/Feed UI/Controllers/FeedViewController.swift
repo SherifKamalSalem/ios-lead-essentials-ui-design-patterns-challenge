@@ -5,7 +5,7 @@
 import UIKit
 
 public final class FeedViewController: UITableViewController, UITableViewDataSourcePrefetching {
-	@IBOutlet var errorView: ErrorView?
+	@IBOutlet public private(set) var errorView: ErrorView?
 
 	var viewModel: FeedViewModel? {
 		didSet { bind() }
@@ -30,14 +30,15 @@ public final class FeedViewController: UITableViewController, UITableViewDataSou
 		viewModel?.onLoadingStateChange = { [weak self] isLoading in
 			if isLoading {
 				self?.refreshControl?.beginRefreshing()
-				self?.errorView?.hideMessage()
 			} else {
 				self?.refreshControl?.endRefreshing()
 			}
 		}
 
-		viewModel?.onFeedLoadWithError = { [weak self] message in
-			self?.errorView?.show(message: message)
+		viewModel?.onErrorStateChange = { [weak self] message in
+			if let message = message {
+				self?.errorView?.show(message: message)
+			}
 		}
 	}
 
