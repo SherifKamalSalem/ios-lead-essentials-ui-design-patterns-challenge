@@ -8,6 +8,6 @@
 
 import Foundation
 
-struct FeedViewErrorModel {
+struct FeedErrorViewModel {
 	let errorMessage: String
 }
